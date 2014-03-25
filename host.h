@@ -50,4 +50,5 @@ int host_call(enum HOST_SYSCALL, void *argv) __attribute__((naked));
 
 int host_system(char *cmd);
 int host_open(char *file, enum HOST_OPEN);
+int host_write(int handle, char *buffer);
 #endif 
