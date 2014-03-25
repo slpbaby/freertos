@@ -27,3 +27,8 @@ int host_call(enum HOST_SYSCALL action, void *argv)
 int host_system(char *cmd){
 	return host_call(SYS_SYSTEM, (param []){{.pdChrPtr=cmd}, {.pdInt=strlen(cmd)}});
 }
+
+int host_open(char *file, enum HOST_OPEN mode){
+	return host_call(SYS_OPEN, (param []){{.pdChrPtr=file}, {.pdInt=strlen(file)}, {.pdPtr=(void *)mode}});
+}
+
