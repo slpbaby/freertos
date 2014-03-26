@@ -12,7 +12,7 @@
 #include "filesystem.h"
 #include "fio.h"
 #include "romfs.h"
-
+#include "host.h"
 #include "clib.h"
 #include "shell.h"
 
@@ -84,6 +84,19 @@ char recv_byte()
 	while(!xQueueReceive(serial_rx_queue, &msg, portMAX_DELAY));
 	return msg;
 }
+void record_sysinfo(void *pvParameters)
+{
+	int HostHandle;
+	signed char buffer[1024];
+	HostHandle = host_open("sysinfo",HO_WONLY);
+	while(1) {
+		vTaskList(buffer);
+		host_write(HostHandle,buffer);
+		vTaskDelay(500);
+	}
+	host_close(HostHandle);
+}
+
 void command_prompt(void *pvParameters)
 {
 	char buf[128];
@@ -127,7 +140,9 @@ int main()
 	xTaskCreate(command_prompt,
 	            (signed portCHAR *) "Command Prompt",
 	            512 /* stack size */, NULL, tskIDLE_PRIORITY + 2, NULL);
-
+	xTaskCreate(record_sysinfo,
+		    (signed portCHAR *) "Record sysinfo",
+		    512, NULL, tskIDLE_PRIORITY + 1, NULL);
 	/* Start running the tasks. */
 	vTaskStartScheduler();
 
