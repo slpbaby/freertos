@@ -29,9 +29,13 @@ int host_system(char *cmd){
 }
 
 int host_open(char *file, enum HOST_OPEN mode){
-	return host_call(SYS_OPEN, (param []){{.pdChrPtr=file}, {.pdInt=strlen(file)}, {.pdPtr=(void *)mode}});
+	return host_call(SYS_OPEN, (param []){{.pdChrPtr=file}, {.pdInt=strlen(file)}, {.pdInt=mode}});
+}
+
+int host_close(int handle){
+	return host_call(SYS_CLOSE, (param []){{.pdInt=handle}});
 }
 
 int host_write(int handle, char *buffer){
-	return host_call(SYS_WRITE, (param []){{.pdChrPtr=(void *)handle}, {.pdInt=strlen(buffer)}, {.pdPtr=buffer}});
+	return host_call(SYS_WRITE, (param []){{.pdInt=handle}, {.pdChrPtr=buffer}, {.pdInt=strlen(buffer)}});
 }
