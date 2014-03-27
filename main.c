@@ -86,15 +86,13 @@ char recv_byte()
 }
 void record_sysinfo(void *pvParameters)
 {
-	int HostHandle;
 	signed char buffer[1024];
-	HostHandle = host_open("sysinfo",HO_WONLY);
+	write_to_host_file("sysinfo","",0); //create new file
 	while(1) {
 		vTaskList(buffer);
-		host_write(HostHandle,buffer);
+		write_to_host_file("sysinfo",buffer,1);
 		vTaskDelay(500);
 	}
-	host_close(HostHandle);
 }
 
 void command_prompt(void *pvParameters)

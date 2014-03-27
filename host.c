@@ -39,3 +39,17 @@ int host_close(int handle){
 int host_write(int handle, char *buffer){
 	return host_call(SYS_WRITE, (param []){{.pdInt=handle}, {.pdChrPtr=buffer}, {.pdInt=strlen(buffer)}});
 }
+
+int write_to_host_file(char *file, char *buffer, int append) {
+	
+	int HostHandle;
+	if (append == 1) 
+		HostHandle = host_open(file,HO_APPEND);
+	else 
+		HostHandle = host_open(file,HO_WONLY);
+	if (HostHandle == -1)
+		return -1;
+	host_write(HostHandle,buffer);
+	host_close(HostHandle);
+	return 0;
+}
