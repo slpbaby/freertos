@@ -90,7 +90,9 @@ void record_sysinfo(void *pvParameters)
 	write_to_host_file("sysinfo","",0); //create new file
 	while(1) {
 		vTaskList(buffer);
-		write_to_host_file("sysinfo",buffer,1);
+		if(write_to_host_file("sysinfo",buffer,1)==-1) {
+			fio_printf(1, "\r\n Failed to write file\r\n");
+		}
 		vTaskDelay(500);
 	}
 }
