@@ -29,7 +29,7 @@ int host_system(char *cmd){
 }
 
 int host_open(char *file, enum HOST_OPEN mode){
-	return host_call(SYS_OPEN, (param []){{.pdChrPtr=file}, {.pdInt=strlen(file)}, {.pdInt=mode}});
+	return host_call(SYS_OPEN, (param []){{.pdChrPtr=file}, {.pdInt=mode}, {.pdInt=strlen(file)}});
 }
 
 int host_close(int handle){
@@ -44,7 +44,7 @@ int write_to_host_file(char *file, char *buffer, int append) {
 	
 	int HostHandle;
 	if (append == 1) 
-		HostHandle = host_open(file,HO_APPEND);
+		HostHandle = host_open(file,HO_APPENDP);
 	else 
 		HostHandle = host_open(file,HO_WONLY);
 	if (HostHandle == -1)
