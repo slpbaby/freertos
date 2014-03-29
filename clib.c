@@ -136,11 +136,27 @@ char *utoa(const char *numbox, unsigned int num, unsigned int base){
 	return buf+i+1;
 }
 
-int atoi(char *numstr) {
+// atoi - convert string to integer
+// return -1 if numstr is not a number
+// return 0 if success
+// Parameter:
+//	*numstr: string to convert from
+//	*num: int variable to store the result
+int atoi(char *numstr, signed int *num) {
 	int result = 0;
-	int i;
-	for (i = 0; numstr[i] != '\0'; i++) {
+	int i = 0,neg = 0;
+	if (numstr[0] == '-') {
+		neg = 1;
+		i = 1;
+	}
+	for (; numstr[i] != '\0'; i++) {
+		if (numstr[i] < '0' && numstr[i] > '9')
+			return -1;
 		result = result * 10 + numstr[i] - '0';
 	}
-	return result;
+	if (neg == 1)
+		*num = -(result);
+	else
+		*num = result;
+	return 0;
 }
