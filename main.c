@@ -86,14 +86,17 @@ char recv_byte()
 }
 void record_sysinfo(void *pvParameters)
 {
+	portTickType xLastWakeTime;
+	const portTickType xFrequency = 500;
 	signed char buffer[1024];
+	xLastWakeTime = xTaskGetTickCount();
 	write_to_host_file("sysinfo","",0); //create new file
 	while(1) {
 		vTaskList(buffer);
 		while(write_to_host_file("sysinfo",buffer,1)==-1) {
 			vTaskDelay(5);
 		}
-		vTaskDelay(500);
+		vTaskDelayUntil( &xLastWakeTime, xFrequency );
 	}
 }
 
