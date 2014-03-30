@@ -90,7 +90,7 @@ void record_sysinfo(void *pvParameters)
 	const portTickType xFrequency = 500;
 	signed char buffer[1024];
 	xLastWakeTime = xTaskGetTickCount();
-	write_to_host_file("sysinfo","",0); //create new file
+	write_to_host_file("sysinfo","Name\t\tState    Priority    Stack    Num\r\n",0); //create new file
 	while(1) {
 		vTaskList(buffer);
 		while(write_to_host_file("sysinfo",buffer,1)==-1) {
